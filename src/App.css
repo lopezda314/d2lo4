@@ -1,20 +1,17 @@
 .App {
+  max-width: 640px; 
   text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
+  width: 20vmin;
 }
 
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -25,9 +22,39 @@
 
 @keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
-  }
-  to {
     transform: rotate(360deg);
   }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.operationSymbolRow {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.operationSymbol {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 48px;
+  color: white;
+}
+
+.topNumberSymbolRow {
+  padding-top: 48px;
+}
+
+.middleNumberSymbolRow {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.numberSymbol {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 72px;
+  color: yellow;
 }
