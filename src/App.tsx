@@ -144,14 +144,14 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
           <OperationButton operationSymbol={"÷"} onClick={() => this.handleOperationPress("÷")} />
         </div>
         <div className="topNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[0]} onClick={() => this.handleNumberPress(0)} />
+          <NumberButton numberSymbol={currentProblem[0]} onClick={() => this.handleNumberPress(0)} disabled={this.state.disabled.has(0)} />
         </div>
         <div className="middleNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[1]} onClick={() => this.handleNumberPress(1)} />
-          <NumberButton numberSymbol={currentProblem[2]} onClick={() => this.handleNumberPress(2)} />
+          <NumberButton numberSymbol={currentProblem[1]} onClick={() => this.handleNumberPress(1)} disabled={this.state.disabled.has(1)} />
+          <NumberButton numberSymbol={currentProblem[2]} onClick={() => this.handleNumberPress(2)} disabled={this.state.disabled.has(2)} />
         </div>
         <div className="bottomNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[3]} onClick={() => this.handleNumberPress(3)} />
+          <NumberButton numberSymbol={currentProblem[3]} onClick={() => this.handleNumberPress(3)} disabled={this.state.disabled.has(3)} />
         </div>
         <div className="progress">
           {this.state.currentNumber}
@@ -186,6 +186,7 @@ class OperationButton extends React.Component<OperationProps, State> {
 interface NumberProps {
   numberSymbol: number;
   onClick: any;
+  disabled: boolean;
 }
 
 class NumberButton extends React.Component<NumberProps, State> {
@@ -198,11 +199,11 @@ class NumberButton extends React.Component<NumberProps, State> {
 
  render() {
   return (
-    <button onClick={this.props.onClick} className="numberSymbol">
+    <button onClick={this.props.onClick} className={this.props.disabled ? "numberSymbolDisabled" : "numberSymbol"}>
       {this.props.numberSymbol}
     </button>
   )
- } 
+ }
 }
 
 export default App;
