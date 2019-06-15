@@ -84,14 +84,14 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
           <OperationButton operationSymbol={"÷"} />
         </div>
         <div className="topNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[0][0]}/>
+          <NumberButton numberSymbol={this.state.problems[this.state.problem][0]}/>
         </div>
         <div className="middleNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[0][1]}/>
-          <NumberButton numberSymbol={this.state.problems[0][2]}/>
+          <NumberButton numberSymbol={this.state.problems[this.state.problem][1]}/>
+          <NumberButton numberSymbol={this.state.problems[this.state.problem][2]}/>
         </div>
         <div className="bottomNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[0][3]}/>
+          <NumberButton numberSymbol={this.state.problems[this.state.problem][3]}/>
         </div>
       </div>
     );
