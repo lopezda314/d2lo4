@@ -51,6 +51,29 @@
     transform: none;
 }
 
+
+.solution {
+  border: 1px solid white;
+  border-radius: 50%;
+  position: absolute;
+  top: 120px;
+  right: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 48px;
+  color: white;
+}
+
+.solution:focus {
+    outline: none;
+    outline-offset: none;
+}
+
+.solution:active {
+    transform: none;
+}
+
 .operationSymbolRow {
   display: flex;
   justify-content: space-evenly;

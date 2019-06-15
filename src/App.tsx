@@ -82,6 +82,14 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     this.loadSolutions();
   }
 
+  clearProgress() {
+    this.setState({currentNumber: 0, currentOperation: "", disabled: new Set()});
+  }
+
+  showSolution() {
+    alert(this.state.solutions[this.state.problem]);
+  }
+
   handleNumberPress(index: number) {
     if (!this.state.hasStartedProblem) {
       this.setState({hasStartedProblem: true});
@@ -126,16 +134,15 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     this.setState({currentOperation: buttonPressed});
   }
 
-  clearProgress() {
-    this.setState({currentNumber: 0, currentOperation: "", disabled: new Set()});
-  }
-
   render() {
     const currentProblem = this.state.problems[this.state.problem];
     return (
       <div className="main">
         <button className="clearProgress" onClick={() => this.clearProgress()}>
           C
+        </button>
+        <button className="solution" onClick={() => this.showSolution()}>
+          S
         </button>
         <div className="operationSymbolRow">
           <OperationButton operationSymbol={"+"} onClick={() => this.handleOperationPress("+")} />
