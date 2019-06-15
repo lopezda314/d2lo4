@@ -22,6 +22,8 @@ interface GameboardState {
   problems: number[][];
   solutions: string[];
   problem: number;
+  currentNumber: number;
+  currentOperation: string;
 }
 
 class Gameboard extends React.Component<GameboardProps, GameboardState> {
@@ -30,7 +32,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     this.state = {
       problems: [[1, 1, 1, 8]],
       solutions: ["(1+1+1)*8"],
-      problem: 0
+      problem: 0,
+      currentNumber: 0,
+      currentOperation: ""
     };
   }
 
@@ -93,6 +97,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
         </div>
         <div className="bottomNumberSymbolRow">
           <NumberButton numberSymbol={currentProblem[3]}/>
+        </div>
+        <div className="progress">
+          {this.state.currentNumber}
         </div>
       </div>
     );
