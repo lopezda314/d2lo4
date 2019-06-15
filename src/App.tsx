@@ -24,6 +24,8 @@ interface GameboardState {
   problem: number;
   currentNumber: number;
   currentOperation: string;
+  hasStartedProblem: boolean;
+  disabled: any;
 }
 
 class Gameboard extends React.Component<GameboardProps, GameboardState> {
@@ -34,7 +36,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       solutions: ["(1+1+1)*8"],
       problem: 0,
       currentNumber: 0,
-      currentOperation: ""
+      currentOperation: "",
+      hasStartedProblem: true,
+      disabled: new Set(),
     };
   }
 
@@ -78,25 +82,76 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     this.loadSolutions();
   }
 
+  handleNumberPress(index: number) {
+    if (!this.state.hasStartedProblem) {
+      this.setState({hasStartedProblem: true});
+    }
+    if (this.state.disabled.has(index)) {
+      return;
+    }
+    this.setState({disabled: this.state.disabled.add(index)});
+    const buttonPressed = this.state.problems[this.state.problem][index];
+    if (!this.state.currentOperation) {
+      this.setState({currentNumber: buttonPressed});
+      return;
+    }
+    if (this.state.currentOperation === "+") {
+      this.setState({currentNumber: buttonPressed + this.state.currentNumber, currentOperation: ""});
+      return;
+    }
+    if (this.state.currentOperation === "-") {
+      this.setState({currentNumber: this.state.currentNumber - buttonPressed, currentOperation: ""});
+      return;
+    }
+    if (this.state.currentOperation === "x") {
+      this.setState({currentNumber: buttonPressed * this.state.currentNumber, currentOperation: ""});
+      return;
+    }
+    if (this.state.currentOperation === "÷") {
+      if (buttonPressed === 0) {
+        return;
+      } 
+      if (this.state.currentNumber / buttonPressed !== Math.floor(this.state.currentNumber / buttonPressed)) {
+        return;
+      }
+      this.setState({currentNumber: this.state.currentNumber / buttonPressed, currentOperation: ""});
+      return;
+    }
+  }
+
+  handleOperationPress(buttonPressed: string) {
+    if (!this.state.hasStartedProblem) {
+      return;
+    }
+    this.setState({currentOperation: buttonPressed});
+  }
+
+  clearProgress() {
+    this.setState({currentNumber: 0, currentOperation: "", disabled: new Set()});
+  }
+
   render() {
     const currentProblem = this.state.problems[this.state.problem];
     return (
       <div className="main">
+        <button className="clearProgress" onClick={() => this.clearProgress()}>
+          C
+        </button>
         <div className="operationSymbolRow">
-          <OperationButton operationSymbol={"+"} />
-          <OperationButton operationSymbol={"-"} />
-          <OperationButton operationSymbol={"x"} />
-          <OperationButton operationSymbol={"÷"} />
+          <OperationButton operationSymbol={"+"} onClick={() => this.handleOperationPress("+")} />
+          <OperationButton operationSymbol={"-"} onClick={() => this.handleOperationPress("-")} />
+          <OperationButton operationSymbol={"x"} onClick={() => this.handleOperationPress("x")} />
+          <OperationButton operationSymbol={"÷"} onClick={() => this.handleOperationPress("÷")} />
         </div>
         <div className="topNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[0]} />
+          <NumberButton numberSymbol={currentProblem[0]} onClick={() => this.handleNumberPress(0)} />
         </div>
         <div className="middleNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[1]} />
-          <NumberButton numberSymbol={currentProblem[2]} />
+          <NumberButton numberSymbol={currentProblem[1]} onClick={() => this.handleNumberPress(1)} />
+          <NumberButton numberSymbol={currentProblem[2]} onClick={() => this.handleNumberPress(2)} />
         </div>
         <div className="bottomNumberSymbolRow">
-          <NumberButton numberSymbol={currentProblem[3]} />
+          <NumberButton numberSymbol={currentProblem[3]} onClick={() => this.handleNumberPress(3)} />
         </div>
         <div className="progress">
           {this.state.currentNumber}
@@ -108,6 +163,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
 
 interface OperationProps {
   operationSymbol: string;
+  onClick: any;
 }
 
 class OperationButton extends React.Component<OperationProps, State> {
@@ -118,13 +174,9 @@ class OperationButton extends React.Component<OperationProps, State> {
   }
  }
 
-  handleButtonPress() {
-    alert(this.props.operationSymbol);
-  }
-
  render() {
   return (
-    <button onClick={() => this.handleButtonPress()} className="operationSymbol">
+    <button onClick={this.props.onClick} className="operationSymbol">
       {this.props.operationSymbol}
     </button>
   )
@@ -133,6 +185,7 @@ class OperationButton extends React.Component<OperationProps, State> {
 
 interface NumberProps {
   numberSymbol: number;
+  onClick: any;
 }
 
 class NumberButton extends React.Component<NumberProps, State> {
@@ -143,13 +196,9 @@ class NumberButton extends React.Component<NumberProps, State> {
   }
  }
 
-  handleButtonPress() {
-    alert(this.props.numberSymbol);
-  }
-
  render() {
   return (
-    <button onClick={() => this.handleButtonPress()} className="numberSymbol">
+    <button onClick={this.props.onClick} className="numberSymbol">
       {this.props.numberSymbol}
     </button>
   )
