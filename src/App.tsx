@@ -9,19 +9,19 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <Gameboard numbers={[1,1,1,8]} />
+        <Gameboard />
       </header>
     </div>
   );
 }
 
 interface GameboardProps {
-  numbers: number[];
 }
 
 interface GameboardState {
   problems: number[][];
   solutions: string[];
+  problem: number;
 }
 
 class Gameboard extends React.Component<GameboardProps, GameboardState> {
@@ -29,7 +29,8 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     super(props);
     this.state = {
       problems: [[1, 1, 1, 8]],
-      solutions: ["(1+1+1)*8"]
+      solutions: ["(1+1+1)*8"],
+      problem: 0
     };
   }
 
@@ -43,24 +44,23 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
 
 
   readTextFile(file: string, state: GameboardState["problems"] | GameboardState["solutions"]) {
-    var rawFile = new XMLHttpRequest();
+    const rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
     rawFile.onreadystatechange = () => {
         if (rawFile.readyState === 4) {
             if (rawFile.status === 200 || rawFile.status === 0) {
-                var allText = rawFile.responseText;
+                const textLines = rawFile.responseText.split(/\n/);
                 if (state === this.state.solutions) {
                   this.setState({
-                      problems: this.state.problems,
-                      solutions: allText.split(/\n/)
+                      solutions: textLines,
+                      problem: Math.floor((Math.random() * textLines.length) + 1)
                   });
                 }
                 if (state === this.state.problems) {
                   this.setState({
-                      problems: allText.split(/\n/).map((line) => {
+                      problems: textLines.map((line) => {
                         return line.split(' ').map(Number);
                       }),
-                      solutions: this.state.solutions
                   });
                 }
             }
@@ -84,14 +84,14 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
           <OperationButton operationSymbol={"÷"} />
         </div>
         <div className="topNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[this.state.problems.length -1][0]}/>
+          <NumberButton numberSymbol={this.state.problems[0][0]}/>
         </div>
         <div className="middleNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[this.state.problems.length -1][1]}/>
-          <NumberButton numberSymbol={this.state.problems[this.state.problems.length -1][2]}/>
+          <NumberButton numberSymbol={this.state.problems[0][1]}/>
+          <NumberButton numberSymbol={this.state.problems[0][2]}/>
         </div>
         <div className="bottomNumberSymbolRow">
-          <NumberButton numberSymbol={this.state.problems[this.state.problems.length -1][3]}/>
+          <NumberButton numberSymbol={this.state.problems[0][3]}/>
         </div>
       </div>
     );
