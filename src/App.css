@@ -1,3 +1,7 @@
+button {
+  -webkit-appearance: none;
+}
+
 .App {
   max-width: 640px; 
   text-align: center;
