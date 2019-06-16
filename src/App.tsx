@@ -112,19 +112,22 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     if (this.state.currentOperation === "+") {
       const problems = this.state.problems;
       problems[this.state.problem][index] = numberInMemory + buttonPressed;
-      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: index});
+      this.checkWin(disabled.size, numberInMemory * buttonPressed);
       return;
     }
     if (this.state.currentOperation === "-") {
       const problems = this.state.problems;
       problems[this.state.problem][index] = numberInMemory - buttonPressed;
-      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: index});
+      this.checkWin(disabled.size, numberInMemory - buttonPressed);
       return;
     }
     if (this.state.currentOperation === "x") {
       const problems = this.state.problems;
       problems[this.state.problem][index] = numberInMemory * buttonPressed;
-      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: index});
+      this.checkWin(disabled.size, numberInMemory * buttonPressed);
       return;
     }
     if (this.state.currentOperation === "÷") {
@@ -138,8 +141,17 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       }
       const problems = this.state.problems;
       problems[this.state.problem][index] = numberInMemory / buttonPressed;
-      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: index});
+      this.checkWin(disabled.size, numberInMemory / buttonPressed);
       return;
+    }
+  }
+
+  checkWin(numbersDisabled: number, currentNumber: number) {
+    if (numbersDisabled === 3 && currentNumber === 24) {
+      alert("you win!");
+      this.componentDidMount();
+      this.clearProgress();
     }
   }
 
