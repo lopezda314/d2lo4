@@ -22,9 +22,9 @@ interface GameboardState {
   problems: number[][];
   solutions: string[];
   problem: number;
-  currentNumber: number;
+  originalProblem: number[];
+  currentNumberIndex: number;
   currentOperation: string;
-  hasStartedProblem: boolean;
   disabled: any;
 }
 
@@ -35,9 +35,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       problems: [[1, 1, 1, 8]],
       solutions: ["(1+1+1)*8"],
       problem: 0,
-      currentNumber: 0,
+      originalProblem: [],
+      currentNumberIndex: -1,
       currentOperation: "",
-      hasStartedProblem: true,
       disabled: new Set(),
     };
   }
@@ -61,14 +61,17 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
                 if (state === this.state.solutions) {
                   this.setState({
                       solutions: textLines,
-                      problem: Math.floor((Math.random() * textLines.length) + 1)
                   });
                 }
                 if (state === this.state.problems) {
-                  this.setState({
-                      problems: textLines.map((line) => {
+                  const problemIndex = Math.floor((Math.random() * textLines.length) + 1);
+                  const problems = textLines.map((line) => {
                         return line.split(' ').map(Number);
-                      }),
+                      });
+                  this.setState({
+                      problems: problems,
+                      problem: problemIndex,
+                      originalProblem: Array.from(problems[problemIndex]),
                   });
                 }
             }
@@ -83,7 +86,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
   }
 
   clearProgress() {
-    this.setState({currentNumber: 0, currentOperation: "", disabled: new Set()});
+    const oldProblems = this.state.problems;
+    oldProblems[this.state.problem] = Array.from(this.state.originalProblem);
+    this.setState({currentNumberIndex: -1, currentOperation: "", disabled: new Set(), problems: oldProblems});
   }
 
   showSolution() {
@@ -91,44 +96,52 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
   }
 
   handleNumberPress(index: number) {
-    if (!this.state.hasStartedProblem) {
-      this.setState({hasStartedProblem: true});
-    }
     if (this.state.disabled.has(index)) {
       return;
     }
-    this.setState({disabled: this.state.disabled.add(index)});
     const buttonPressed = this.state.problems[this.state.problem][index];
     if (!this.state.currentOperation) {
-      this.setState({currentNumber: buttonPressed});
+      this.setState({currentNumberIndex: index});
       return;
     }
+    const numberInMemory = this.state.problems[this.state.problem][this.state.currentNumberIndex]
+    const disabled = new Set(this.state.disabled).add(this.state.currentNumberIndex);
     if (this.state.currentOperation === "+") {
-      this.setState({currentNumber: buttonPressed + this.state.currentNumber, currentOperation: ""});
+      const problems = this.state.problems;
+      problems[this.state.problem][index] = numberInMemory + buttonPressed;
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
       return;
     }
     if (this.state.currentOperation === "-") {
-      this.setState({currentNumber: this.state.currentNumber - buttonPressed, currentOperation: ""});
+      const problems = this.state.problems;
+      problems[this.state.problem][index] = numberInMemory - buttonPressed;
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
       return;
     }
     if (this.state.currentOperation === "x") {
-      this.setState({currentNumber: buttonPressed * this.state.currentNumber, currentOperation: ""});
+      const problems = this.state.problems;
+      problems[this.state.problem][index] = numberInMemory * buttonPressed;
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
       return;
     }
     if (this.state.currentOperation === "÷") {
       if (buttonPressed === 0) {
+        this.setState({currentOperation: "", currentNumberIndex: -1});
         return;
       } 
-      if (this.state.currentNumber / buttonPressed !== Math.floor(this.state.currentNumber / buttonPressed)) {
+      if (numberInMemory / buttonPressed !== Math.floor(numberInMemory / buttonPressed)) {
+        this.setState({currentOperation: "", currentNumberIndex: -1});
         return;
       }
-      this.setState({currentNumber: this.state.currentNumber / buttonPressed, currentOperation: ""});
+      const problems = this.state.problems;
+      problems[this.state.problem][index] = numberInMemory / buttonPressed;
+      this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: -1});
       return;
     }
   }
 
   handleOperationPress(buttonPressed: string) {
-    if (!this.state.hasStartedProblem) {
+    if (this.state.currentNumberIndex < 0) {
       return;
     }
     this.setState({currentOperation: buttonPressed});
@@ -159,9 +172,6 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
         </div>
         <div className="bottomNumberSymbolRow">
           <NumberButton numberSymbol={currentProblem[3]} onClick={() => this.handleNumberPress(3)} disabled={this.state.disabled.has(3)} />
-        </div>
-        <div className="progress">
-          {this.state.currentNumber}
         </div>
       </div>
     );
