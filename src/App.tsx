@@ -99,6 +99,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     if (this.state.disabled.has(index)) {
       return;
     }
+    if (this.state.currentNumberIndex >= 0 && this.state.currentNumberIndex === index) {
+      return;
+    }
     const buttonPressed = this.state.problems[this.state.problem][index];
     if (!this.state.currentOperation) {
       this.setState({currentNumberIndex: index});
