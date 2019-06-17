@@ -113,7 +113,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       const problems = this.state.problems;
       problems[this.state.problem][index] = numberInMemory + buttonPressed;
       this.setState({problems: problems, currentOperation: "", disabled: disabled, currentNumberIndex: index});
-      this.checkWin(disabled.size, numberInMemory * buttonPressed);
+      this.checkWin(disabled.size, numberInMemory + buttonPressed);
       return;
     }
     if (this.state.currentOperation === "-") {
