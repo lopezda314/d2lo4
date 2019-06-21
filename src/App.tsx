@@ -1,5 +1,8 @@
 import React from 'react';
+import seedrandom from 'seedrandom'
 import './App.css';
+
+const random: () => number = seedrandom('1234');
 
 interface State {
   value: any;
@@ -15,8 +18,7 @@ const App: React.FC = () => {
   );
 }
 
-interface GameboardProps {
-}
+interface GameboardProps {}
 
 interface GameboardState {
   problems: number[][];
@@ -26,6 +28,7 @@ interface GameboardState {
   currentNumberIndex: number;
   currentOperation: string;
   disabled: any;
+  currentRNG: any;
 }
 
 class Gameboard extends React.Component<GameboardProps, GameboardState> {
@@ -39,6 +42,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       currentNumberIndex: -1,
       currentOperation: "",
       disabled: new Set(),
+      currentRNG: random,
     };
   }
 
@@ -64,7 +68,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
                   });
                 }
                 if (state === this.state.problems) {
-                  const problemIndex = Math.floor((Math.random() * textLines.length) + 1);
+                  const problemIndex = Math.floor((this.state.currentRNG() * textLines.length) + 1);
                   const problems = textLines.map((line) => {
                         return line.split(' ').map(Number);
                       });
@@ -150,7 +154,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
   checkWin(numbersDisabled: number, currentNumber: number) {
     if (numbersDisabled === 3 && currentNumber === 24) {
       alert("you win!");
-      this.componentDidMount();
+      this.setState({problem: Math.floor((this.state.currentRNG() * this.state.problems.length))});
       this.clearProgress();
     }
   }
@@ -164,6 +168,8 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
 
   render() {
     const currentProblem = this.state.problems[this.state.problem];
+    console.log(this.state.problem);
+    console.log(currentProblem);
     return (
       <div className="main">
         <button className="clearProgress" onClick={() => this.clearProgress()}>
