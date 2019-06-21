@@ -95,6 +95,12 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     this.setState({currentNumberIndex: -1, currentOperation: "", disabled: new Set(), problems: oldProblems});
   }
 
+  skipProblem() {
+    this.clearProgress();
+    const nextProblem = Math.floor(this.state.currentRNG() * this.state.problems.length);
+    this.setState({problem: nextProblem, originalProblem: Array.from(this.state.problems[nextProblem])});
+  }
+
   showSolution() {
     alert(this.state.solutions[this.state.problem]);
   }
@@ -176,12 +182,17 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     const currentProblem = this.state.problems[this.state.problem];
     return (
       <div className="main">
-        <button onTouchStart={() => {}} className="clearProgress" onClick={() => this.clearProgress()}>
-          C
-        </button>
-        <button onTouchStart={() => {}} className="solution" onClick={() => this.showSolution()}>
-          S
-        </button>
+        <div className="metaButtons">
+          <button onTouchStart={() => {}} className="metaProblemButton" onClick={() => this.clearProgress()}>
+            Clear
+          </button>
+          <button onTouchStart={() => {}} className="metaProblemButton" onClick={() => this.skipProblem()}>
+            Skip
+          </button>
+          <button onTouchStart={() => {}} className="metaProblemButton" onClick={() => this.showSolution()}>
+            Help
+          </button>
+        </div>
         <div className="operationSymbolRow">
           <OperationButton operationSymbol={"+"} onClick={() => this.handleOperationPress("+")} />
           <OperationButton operationSymbol={"-"} onClick={() => this.handleOperationPress("-")} />

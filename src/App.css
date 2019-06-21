@@ -30,54 +30,10 @@
   }
 }
 
-.clearProgress {
-  border: 1px solid white;
-  border-radius: 50%;
-  position: absolute;
-  top: 120px;
-  left: 10px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  font-size: 48px;
-  color: white;
-}
-
-.clearProgress:focus {
-    outline: none;
-    outline-offset: none;
-}
-
-.clearProgress:active {
-    transform: none;
-}
-
-
-.solution {
-  border: 1px solid white;
-  border-radius: 50%;
-  position: absolute;
-  top: 120px;
-  right: 10px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  font-size: 48px;
-  color: white;
-}
-
-.solution:focus {
-    outline: none;
-    outline-offset: none;
-}
-
-.solution:active {
-    transform: none;
-}
-
 .operationSymbolRow {
   display: flex;
   justify-content: space-evenly;
+  padding-top: 48px;
 }
 
 .operationSymbol {
@@ -88,8 +44,32 @@
   color: white;
 }
 
+.metaButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.metaProblemButton {
+  border: 1px solid white;
+  border-radius: 50%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 12px;
+  color: white;
+}
+
+.metaProblemButton:focus {
+    outline: none;
+    outline-offset: none;
+}
+
+.metaProblemButton:active {
+    transform: none;
+}
+
 .topNumberSymbolRow {
-  padding-top: 96px;
+  padding-top: 48px;
 }
 
 .middleNumberSymbolRow {
