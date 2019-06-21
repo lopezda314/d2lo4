@@ -176,10 +176,10 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     const currentProblem = this.state.problems[this.state.problem];
     return (
       <div className="main">
-        <button className="clearProgress" onClick={() => this.clearProgress()}>
+        <button onTouchStart={() => {}} className="clearProgress" onClick={() => this.clearProgress()}>
           C
         </button>
-        <button className="solution" onClick={() => this.showSolution()}>
+        <button onTouchStart={() => {}} className="solution" onClick={() => this.showSolution()}>
           S
         </button>
         <div className="operationSymbolRow">
@@ -218,7 +218,7 @@ class OperationButton extends React.Component<OperationProps, State> {
 
  render() {
   return (
-    <button onClick={this.props.onClick} className="operationSymbol">
+    <button onTouchStart={() => {}} onClick={this.props.onClick} className="operationSymbol">
       {this.props.operationSymbol}
     </button>
   )
@@ -241,7 +241,7 @@ class NumberButton extends React.Component<NumberProps, State> {
 
  render() {
   return (
-    <button onClick={this.props.onClick} className={this.props.disabled ? "numberSymbolDisabled" : "numberSymbol"}>
+    <button onTouchStart={() => {}} onClick={this.props.onClick} className={this.props.disabled ? "numberSymbolDisabled" : "numberSymbol"}>
       {this.props.numberSymbol}
     </button>
   )
