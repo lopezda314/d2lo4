@@ -30,23 +30,10 @@
   }
 }
 
-.operationSymbolRow {
-  display: flex;
-  justify-content: space-evenly;
-  padding-top: 48px;
-}
-
-.operationSymbol {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  font-size: 48px;
-  color: white;
-}
-
 .metaButtons {
   display: flex;
   justify-content: space-evenly;
+  padding-top: 48px;
 }
 
 .metaProblemButton {
@@ -68,8 +55,22 @@
     transform: none;
 }
 
+.operationSymbolRow {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 24px;
+}
+
+.operationSymbol {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 48px;
+  color: white;
+}
+
 .topNumberSymbolRow {
-  padding-top: 48px;
+  padding-top: 24px;
 }
 
 .middleNumberSymbolRow {
