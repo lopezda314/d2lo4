@@ -68,7 +68,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
                   });
                 }
                 if (state === this.state.problems) {
-                  const problemIndex = Math.floor((this.state.currentRNG() * textLines.length) + 1);
+                  const problemIndex = Math.floor((this.state.currentRNG() * textLines.length));
                   const problems = textLines.map((line) => {
                         return line.split(' ').map(Number);
                       });
@@ -138,8 +138,10 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       if (buttonPressed === 0) {
         this.setState({currentOperation: "", currentNumberIndex: -1});
         return;
-      } 
-      if (numberInMemory / buttonPressed !== Math.floor(numberInMemory / buttonPressed)) {
+      }
+      const quotient = numberInMemory / buttonPressed;
+      // Only let whole numbers or numbers that end in through 1/4, 1/2, 3/4
+      if (quotient !== Math.floor(quotient) && (quotient - Math.floor(quotient)) !== 0.25 && (quotient - Math.floor(quotient)) !== 0.5 && (quotient - Math.floor(quotient)) !== .75) {
         this.setState({currentOperation: "", currentNumberIndex: -1});
         return;
       }
@@ -154,7 +156,11 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
   checkWin(numbersDisabled: number, currentNumber: number) {
     if (numbersDisabled === 3 && currentNumber === 24) {
       alert("you win!");
-      this.setState({problem: Math.floor((this.state.currentRNG() * this.state.problems.length))});
+      const nextProblem = Math.floor(this.state.currentRNG() * this.state.problems.length);
+      this.setState({
+        problem: nextProblem, 
+        originalProblem: Array.from(this.state.problems[nextProblem])
+        });
       this.clearProgress();
     }
   }
@@ -168,8 +174,6 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
 
   render() {
     const currentProblem = this.state.problems[this.state.problem];
-    console.log(this.state.problem);
-    console.log(currentProblem);
     return (
       <div className="main">
         <button className="clearProgress" onClick={() => this.clearProgress()}>
