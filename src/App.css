@@ -1,5 +1,5 @@
 .App {
-  overflow-x: hidden;
+  overflow: hidden;
   text-align: center;
   width: 100%;
 }

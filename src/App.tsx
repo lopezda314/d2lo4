@@ -2,7 +2,7 @@ import React from 'react';
 import seedrandom from 'seedrandom'
 import './App.css';
 
-let seed = Math.random().toString(36).slice(0,4);
+let seed = Math.random().toString(36).slice(2).slice(0, 4);
 const random = seedrandom(seed);
 
 interface State {
@@ -94,7 +94,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
 
   updateSeed(event?: any) {
     this.clearProgress();
-    this.setState({seed: event.target.value, currentRNG: seedrandom(event.target.value)});
+    this.setState({seed: event.target.value.toLowerCase(), currentRNG: seedrandom(event.target.value.toLowerCase())});
     this.skipProblem();
   }
 
