@@ -12,9 +12,7 @@ interface State {
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <Gameboard />
-      </header>
+      <Gameboard />
     </div>
   );
 }
