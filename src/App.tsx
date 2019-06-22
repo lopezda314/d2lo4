@@ -2,7 +2,8 @@ import React from 'react';
 import seedrandom from 'seedrandom'
 import './App.css';
 
-const random: () => number = seedrandom('1234');
+let seed = Math.random().toString(36).slice(0,4);
+const random = seedrandom(seed);
 
 interface State {
   value: any;
@@ -28,6 +29,7 @@ interface GameboardState {
   currentNumberIndex: number;
   currentOperation: string;
   disabled: any;
+  seed: string;
   currentRNG: any;
 }
 
@@ -42,6 +44,7 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
       currentNumberIndex: -1,
       currentOperation: "",
       disabled: new Set(),
+      seed: seed,
       currentRNG: random,
     };
   }
@@ -87,6 +90,12 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
   componentDidMount(){
     this.loadProblems();
     this.loadSolutions();
+  }
+
+  updateSeed(event?: any) {
+    this.clearProgress();
+    this.setState({seed: event.target.value, currentRNG: seedrandom(event.target.value)});
+    this.skipProblem();
   }
 
   clearProgress() {
@@ -182,6 +191,9 @@ class Gameboard extends React.Component<GameboardProps, GameboardState> {
     const currentProblem = this.state.problems[this.state.problem];
     return (
       <div className="main">
+        <div className="seed">
+          Seed: <input type="text" value={this.state.seed} maxLength={4} onChange={(event) => this.updateSeed(event)} />
+        </div>
         <div className="metaButtons">
           <button onTouchStart={() => {}} className="metaProblemButton" onClick={() => this.clearProgress()}>
             Clear
